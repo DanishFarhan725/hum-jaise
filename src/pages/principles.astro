@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { principles } from '../data/principles';
+---
+<Base title="Community principles" description="How we hope to treat each other at Hum Jaise.">
+  <PageIntro title="How we hope to treat each other" urdu="ہم ایک دوسرے کے ساتھ کیسے رہنا چاہتے ہیں">
+    <p>
+      These aren't rules to catch anyone out. They're what we want this place to feel like, for
+      everyone who comes, from every background, language and belief.
+    </p>
+  </PageIntro>
+
+  <div class="wrap">
+    <p class="status note">
+      Hum Jaise is a website for now. There are no member discussions yet, so these principles
+      describe how the community is meant to work. When conversations open, they'll be the
+      basis of how it's looked after.
+    </p>
+
+    <ol class="principles" role="list">
+      {principles.map((p, i) => (
+        <li id={p.id} class="principle" data-reveal>
+          <div class="p-head">
+            <span class="p-num" aria-hidden="true">{i + 1}</span>
+            <div>
+              <h2>{p.title}</h2>
+              <p class="p-ur" lang="ur" dir="rtl">{p.urdu}</p>
+            </div>
+          </div>
+          <div class="p-body">
+            <p>{p.body}</p>
+            <h3 class="visually-hidden">In practice</h3>
+            <ul class="star-list">
+              {p.inPractice.map((x) => <li>{x}</li>)}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <section class="after" data-reveal aria-labelledby="after-title">
+      <h2 id="after-title">If something goes wrong</h2>
+      <p>
+        People get things wrong sometimes, including us. If a conversation ever feels hurtful, the aim
+        is to repair it gently: name what happened, listen, and make room for an apology. When the
+        community has discussions, there'll be a clear and fair way to raise concerns. We'll explain
+        it here before that happens.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .status {
+    max-width: var(--measure);
+    padding: var(--space-2) var(--space-3);
+    background: var(--plaster-deep);
+    border-radius: var(--radius);
+    border: 1px solid var(--plaster-edge);
+    margin-bottom: var(--space-4);
+  }
+  .principles { list-style: none; margin: 0; padding: 0; }
+  .principle {
+    display: grid;
+    gap: var(--space-2) var(--space-5);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--plaster-edge);
+    scroll-margin-top: 1.5rem;
+  }
+  @media (min-width: 56rem) {
+    .principle { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); padding-block: var(--space-5); }
+  }
+  .p-head { display: flex; gap: var(--space-2); align-items: flex-start; }
+  /* Numbers are kept so a principle can be referred to ("principle 4") in future moderation */
+  .p-num {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-top: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--ink);
+    background: var(--sun);
+    -webkit-mask: var(--star) center / contain no-repeat;
+    mask: var(--star) center / contain no-repeat;
+  }
+  .principle h2 { font-size: var(--step-2); }
+  .p-ur { color: var(--ink-soft); font-size: 1.15rem; margin-top: 0.25rem; }
+  .p-body > p { max-width: var(--measure); margin-bottom: var(--space-2); }
+  .p-body .star-list { display: grid; gap: 0.5rem; color: var(--ink-soft); }
+
+  .after {
+    border-top: 1px solid var(--plaster-edge);
+    padding-top: var(--space-5);
+    max-width: 44rem;
+  }
+  .after h2 { font-size: var(--step-3); margin-bottom: var(--space-3); }
+</style>

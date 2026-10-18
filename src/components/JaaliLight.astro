@@ -1,0 +1,72 @@
+---
+// Sunlight through an arched jaali window, falling on the wall behind the text.
+// Purely decorative: hidden from assistive tech, removable from the comfort
+// panel, and its angle follows the visitor's local hour.
+interface Props { placement?: 'hero' | 'intro' }
+const { placement = 'hero' } = Astro.props;
+const uid = `${placement}-${Math.random().toString(36).slice(2, 8)}`;
+---
+<div class={`jaali-light jaali-${uid}`} aria-hidden="true">
+  <svg class="jaali-svg" preserveAspectRatio="xMaxYMid slice" viewBox="0 0 1200 900">
+    <defs>
+      <pattern id={`jaali-${uid}`} width="72" height="72" patternUnits="userSpaceOnUse">
+        <g class="jaali-holes">
+          <rect x="20" y="20" width="32" height="32" />
+          <rect x="20" y="20" width="32" height="32" transform="rotate(45 36 36)" />
+          <rect x="-5" y="-5" width="10" height="10" transform="rotate(45 0 0)" />
+          <rect x="67" y="-5" width="10" height="10" transform="rotate(45 72 0)" />
+          <rect x="-5" y="67" width="10" height="10" transform="rotate(45 0 72)" />
+          <rect x="67" y="67" width="10" height="10" transform="rotate(45 72 72)" />
+        </g>
+      </pattern>
+      <filter id={`soft-${uid}`} x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="1.3" />
+      </filter>
+      <filter id={`edge-${uid}`} x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="28" />
+      </filter>
+      <mask id={`window-${uid}`} maskUnits="userSpaceOnUse" x="-400" y="-400" width="2000" height="1700">
+        <path
+          filter={`url(#edge-${uid})`}
+          fill="#fff"
+          d="M640 900 V330 A250 250 0 0 1 1140 330 V900 Z"
+        />
+      </mask>
+    </defs>
+    <g class="jaali-field" mask={`url(#window-${uid})`}>
+      <rect class="jaali-wash" x="560" y="0" width="660" height="900" />
+      <rect x="560" y="0" width="660" height="900" fill={`url(#jaali-${uid})`} filter={`url(#soft-${uid})`} />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .jaali-light {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    animation: light-arrives 2.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .jaali-svg {
+    width: 100%;
+    height: 100%;
+    opacity: var(--light-opacity);
+  }
+  .jaali-intro .jaali-svg { opacity: calc(var(--light-opacity) * 0.75); }
+  .jaali-holes { fill: var(--light-tint); }
+  .jaali-wash { fill: var(--light-tint); opacity: 0.42; }
+  .jaali-field {
+    transform-box: view-box;
+    transform-origin: 75% 100%;
+    transform: translateX(var(--light-x, 0)) rotate(var(--light-angle, 0deg)) skewX(var(--light-skew, 0deg));
+  }
+  @media (max-width: 40rem) {
+    .jaali-svg { opacity: calc(var(--light-opacity) * 0.7); }
+  }
+  @keyframes light-arrives {
+    from { opacity: 0; filter: blur(16px); }
+    to { opacity: 1; filter: blur(0); }
+  }
+</style>

@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import WriteForm from '../components/WriteForm.astro';
+---
+<Base title="Take part" description="Ways to be part of Hum Jaise today, at whatever pace suits you.">
+  <PageIntro title="Take part, at your own pace" urdu="جتنا چاہیں، جب چاہیں">
+    <p>
+      There's no sign-up, and nothing you have to do. Reading quietly counts. These are the ways to be
+      part of Hum Jaise today.
+    </p>
+  </PageIntro>
+
+  <div class="wrap">
+    <section class="ways" data-reveal aria-labelledby="ways-title">
+      <h2 id="ways-title" class="visually-hidden">Ways to take part</h2>
+      <div class="way">
+        <h3>Read, and stay as long as you like</h3>
+        <p>Start with <a href="/experiences/">experiences</a> or the <a href="/principles/">principles</a>. Come back whenever.</p>
+      </div>
+      <div class="way">
+        <h3>Pass it on</h3>
+        <p>If someone comes to mind as you read this, you could share the link with them. Only if it feels right.</p>
+      </div>
+      <div class="way">
+        <h3>Write to us</h3>
+        <p>Tell us what you'd want from this place, a moment you recognised, or a resource we should check.</p>
+      </div>
+    </section>
+
+    <section class="write" data-reveal id="write" aria-labelledby="write-title">
+      <div class="write-copy">
+        <h2 id="write-title">Write to us</h2>
+        <p>Only the message is needed. Write in English, Urdu, Roman Urdu or whatever comes naturally.</p>
+        <h3>What happens to your message</h3>
+        <ul class="star-list">
+          <li>It's read by the small group who run Hum Jaise.</li>
+          <li>We won't publish it, or any part of it, without asking you first.</li>
+          <li>It's stored with Netlify, the service that hosts this site. More in our <a href="/privacy/">privacy notes</a>.</li>
+          <li>Please leave out details that could identify you or anyone else.</li>
+        </ul>
+      </div>
+
+      <WriteForm idPrefix="tp" />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .ways {
+    display: grid;
+    gap: var(--space-4);
+    padding-bottom: var(--space-5);
+  }
+  @media (min-width: 52rem) {
+    .ways { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+  }
+  .way h3 { font-size: var(--step-1); margin-bottom: 0.5rem; }
+  .way p { color: var(--ink-soft); }
+
+  .write {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5) clamp(1.25rem, 4vw, 3.5rem);
+    background: var(--plaster-deep);
+    border-radius: 2rem;
+    border: 1px solid var(--plaster-edge);
+    scroll-margin-top: 1.5rem;
+  }
+  @media (min-width: 58rem) {
+    .write { grid-template-columns: 0.9fr 1.1fr; gap: var(--space-5); }
+  }
+  .write h2 { font-size: var(--step-3); margin-bottom: var(--space-2); }
+  .write-copy > p { color: var(--ink-soft); max-width: 44ch; }
+  .write-copy h3 { margin-top: var(--space-4); margin-bottom: var(--space-2); }
+  .write-copy .star-list { display: grid; gap: 0.6rem; font-size: var(--step--1); }
+
+</style>

@@ -1,0 +1,607 @@
+---
+import Base from '../layouts/Base.astro';
+import JaaliLight from '../components/JaaliLight.astro';
+import MomentsExplorer from '../components/MomentsExplorer.astro';
+import SectionRail from '../components/SectionRail.astro';
+import Faq from '../components/Faq.astro';
+import WriteForm from '../components/WriteForm.astro';
+import { principles } from '../data/principles';
+
+const sections = [
+  { id: 'welcome', label: 'Welcome' },
+  { id: 'experiences', label: 'Experiences' },
+  { id: 'belonging', label: 'No test at the door' },
+  { id: 'principles', label: 'Principles' },
+  { id: 'resources', label: 'Resources' },
+  { id: 'about', label: 'About' },
+  { id: 'questions', label: 'Questions' },
+  { id: 'take-part', label: 'Take part' },
+];
+
+const crisis = [
+  { name: 'Rescue 1122', what: 'Emergency rescue and ambulance', number: '1122' },
+  { name: 'Police', what: 'When police help is needed', number: '15' },
+  { name: 'Umang helpline', what: 'Emotional support, reported to be free and 24/7', number: '0311 7786264' },
+];
+---
+<Base>
+  <SectionRail sections={sections} />
+
+  <!-- Welcome -->
+  <section class="hero" id="welcome" aria-labelledby="hero-title">
+    <JaaliLight />
+    <div class="wrap hero-inner">
+      <h1 id="hero-title" class="hero-title">
+        <span class="hero-line">Come in as you are.</span>
+        <span class="hero-line">Nobody here needs you to be easier to understand.</span>
+      </h1>
+      <p class="hero-ur" lang="ur" dir="rtl">آپ جیسے ہیں، ویسے ہی کافی ہیں</p>
+      <p class="hero-for">
+        For neurodivergent people in Pakistan, whether you've been diagnosed, you're still wondering,
+        or you just see yourself in these words.
+      </p>
+      <div class="hero-actions">
+        <a class="button" href="#experiences">Read experiences like yours</a>
+        <a class="quiet-link" href="#take-part">How to take part</a>
+      </div>
+      <p class="hero-rest note">Arrived tired? You can just read. Nothing here asks anything of you.</p>
+    </div>
+    <a class="scroll-cue" href="#experiences" aria-label="Scroll to experiences">
+      <span class="cue-star" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <!-- Experiences -->
+  <section class="band band-sun" id="experiences" aria-labelledby="exp-title">
+    <div class="wrap">
+      <div class="band-head" data-reveal>
+        <h2 id="exp-title">Maybe you've been here</h2>
+        <p>
+          Moments many neurodivergent people describe. We wrote these ourselves from common experiences;
+          they aren't quotes from real people.
+        </p>
+      </div>
+      <div data-reveal>
+        <MomentsExplorer />
+      </div>
+      <p class="band-more" data-reveal><a href="/experiences/">See every moment on one page</a></p>
+    </div>
+  </section>
+
+  <!-- Belonging -->
+  <section class="belonging" id="belonging" aria-labelledby="who-title">
+    <p class="watermark" lang="ur" dir="rtl" aria-hidden="true">ہم جیسے</p>
+    <div class="wrap who-grid">
+      <h2 id="who-title" data-reveal="left">There's no test at the door</h2>
+      <div class="who-copy" data-reveal="right">
+        <p class="lede">
+          Maybe you have a diagnosis of autism, ADHD, dyslexia or something else. Maybe you've only
+          started wondering. Maybe you've never had a word for it, and you just found yourself nodding along.
+        </p>
+        <p>
+          All of that is enough. You don't need to explain yourself, make yourself smaller, or turn into
+          someone easier to be around. Hum Jaise means "people like us", and it includes you.
+        </p>
+        <ul class="who-chips" role="list">
+          <li>Diagnosed</li>
+          <li>Self-identifying</li>
+          <li>Still wondering</li>
+          <li>Just relate</li>
+          <li>Family &amp; friends who want to understand</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="band band-dusk" id="principles" aria-labelledby="pr-title">
+    <div class="arcade" aria-hidden="true"></div>
+    <JaaliLight placement="intro" />
+    <div class="wrap dusk-inner">
+      <div class="band-head center" data-reveal>
+        <h2 id="pr-title">How we hope to treat each other</h2>
+        <p class="pr-ur" lang="ur" dir="rtl">ہم ایک دوسرے کے ساتھ کیسے رہنا چاہتے ہیں</p>
+        <p>
+          Eight promises this space is being built around. There are no member discussions yet, so these
+          describe how the community is meant to work. Open any of them to read more.
+        </p>
+      </div>
+      <ol class="pr-grid" role="list" data-reveal="stagger">
+        {principles.map((p, i) => (
+          <li style={`--i:${i}`}>
+            <details class="pr">
+              <summary>
+                <span class="pr-num" aria-hidden="true">{i + 1}</span>
+                <span class="pr-titles">
+                  <span class="pr-title">{p.title}</span>
+                  <span class="pr-urdu" lang="ur" dir="rtl">{p.urdu}</span>
+                </span>
+                <span class="pr-toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="pr-body">
+                <p>{p.body}</p>
+                <ul class="star-list">
+                  {p.inPractice.map((x) => <li>{x}</li>)}
+                </ul>
+              </div>
+            </details>
+          </li>
+        ))}
+      </ol>
+      <p class="band-more center" data-reveal><a href="/principles/">Read the principles on their own page</a></p>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section class="band band-sage" id="resources" aria-labelledby="res-title">
+    <div class="wrap">
+      <div class="res-grid">
+        <div class="band-head" data-reveal="left">
+          <h2 id="res-title">Places to turn</h2>
+          <p>
+            Hum Jaise isn't a crisis service. If you or someone near you might be hurt, please reach out
+            to one of these now.
+          </p>
+          <p class="note check">
+            <span class="tag">Not yet checked</span> Numbers change. Please confirm before you rely on them.
+          </p>
+        </div>
+        <ul class="crisis" role="list" data-reveal="stagger">
+          {crisis.map((c, i) => (
+            <li class="crisis-card" style={`--i:${i}`}>
+              <div>
+                <p class="crisis-name">{c.name}</p>
+                <p class="crisis-what">{c.what}</p>
+              </div>
+              <p class="crisis-num">{c.number}</p>
+              <div class="crisis-actions">
+                <a class="call" href={`tel:${c.number.replace(/\s/g, '')}`}>
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+                  Call <span class="visually-hidden">{c.name}</span>
+                </a>
+                <button type="button" class="copy" data-copy={c.number}>
+                  <span data-copy-label>Copy number</span>
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="res-more" data-reveal>
+        <div>
+          <h3>Organisations in Pakistan</h3>
+          <p>Pakistan Centre for Autism (Karachi), Kazim Anwar ADHD Trust (Karachi), the autism centre at PIMS (Islamabad), and an online South Asian ADHD peer group.</p>
+        </div>
+        <div>
+          <h3>Thinking about an assessment?</h3>
+          <p>Questions to ask before you book, and plain explanations of words like masking and sensory overload.</p>
+        </div>
+        <a class="button" href="/resources/">See all resources</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="about-grid">
+        <div data-reveal="left">
+          <h2 id="about-title">Who's behind this</h2>
+          <p class="lede">
+            A small group of neurodivergent people and people close to us, here in Pakistan. Peers, not
+            doctors, building something we wish we'd had sooner.
+          </p>
+          <p>
+            We've chosen not to put our names on the site for now. Some of us aren't open about being
+            neurodivergent everywhere in our lives, and we'd like you to have that same choice.
+          </p>
+          <p class="band-more"><a href="/about/">More about Hum Jaise</a></p>
+        </div>
+
+        <div class="path" data-reveal="right">
+          <h3 class="path-title">Where this is going</h3>
+          <ol class="path-steps" role="list">
+            <li class="is-now">
+              <span class="path-when">Now</span>
+              <p>A website to read, carefully chosen resources, and a way to write to us.</p>
+            </li>
+            <li>
+              <span class="path-when">Next, if we can do it safely</span>
+              <p>Accounts with a chosen name, so nobody has to use their real one.</p>
+            </li>
+            <li>
+              <span class="path-when">Later</span>
+              <p>Gently moderated conversations, member stories shared with permission, and the whole site in Urdu.</p>
+            </li>
+          </ol>
+          <p class="note">None of the later steps exist yet. We'll say clearly when they do.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section class="band band-lilac" id="questions" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <div class="band-head" data-reveal="left">
+        <h2 id="faq-title">Questions people ask</h2>
+        <p>Short, honest answers. If yours isn't here, write to us below.</p>
+      </div>
+      <div data-reveal="right"><Faq /></div>
+    </div>
+  </section>
+
+  <!-- Take part -->
+  <section class="take" id="take-part" aria-labelledby="take-title">
+    <div class="wrap" data-reveal="door">
+      <div class="door">
+        <JaaliLight placement="intro" />
+        <div class="door-inner">
+          <h2 id="take-title">This place is just beginning</h2>
+          <p class="door-ur" lang="ur" dir="rtl">جتنا چاہیں، جب چاہیں</p>
+          <p class="door-lede">
+            There's no sign-up, and nothing you have to do. Reading quietly counts. If you'd like, tell us
+            what you'd want from this place, a moment you recognised, or a resource we should check.
+            You don't have to give your name.
+          </p>
+          <WriteForm idPrefix="home" />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) =>
+    b.addEventListener('click', async () => {
+      const label = b.querySelector<HTMLElement>('[data-copy-label]');
+      try {
+        await navigator.clipboard.writeText(b.dataset.copy || '');
+        if (label) label.textContent = 'Copied';
+      } catch {
+        if (label) label.textContent = 'Copy failed: select the number';
+      }
+      setTimeout(() => { if (label) label.textContent = 'Copy number'; }, 2200);
+    }),
+  );
+</script>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    margin-top: -4.5rem;
+    padding-top: calc(4.5rem + clamp(3rem, 2rem + 6vw, 7rem));
+    padding-bottom: clamp(5rem, 3rem + 7vw, 8rem);
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+  }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-title { max-width: 17ch; }
+  .hero-line { display: block; }
+  .hero-ur {
+    width: fit-content;
+    max-width: 100%;
+    font-size: var(--step-3);
+    line-height: 1.9;
+    color: var(--ink-soft);
+    margin: var(--space-2) 0 0 clamp(0rem, 12vw, 9rem);
+    text-align: right;
+  }
+  .hero-for { margin-top: var(--space-3); font-size: var(--step-1); line-height: 1.5; max-width: 38ch; }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-top: var(--space-4); }
+  .hero-rest { margin-top: var(--space-3); }
+
+  /* Page-load: the headline arrives line by line, then the Urdu answers it */
+  :global(html.js) .hero-line,
+  :global(html.js) .hero-ur,
+  :global(html.js) .hero-for,
+  :global(html.js) .hero-actions,
+  :global(html.js) .hero-rest {
+    animation: hero-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  :global(html.js) .hero-line:nth-child(2) { animation-delay: 140ms; }
+  :global(html.js) .hero-ur { animation-delay: 420ms; animation-name: hero-in-rtl; }
+  :global(html.js) .hero-for { animation-delay: 560ms; }
+  :global(html.js) .hero-actions { animation-delay: 680ms; }
+  :global(html.js) .hero-rest { animation-delay: 800ms; }
+  @keyframes hero-in { from { opacity: 0; transform: translateY(18px); filter: blur(6px); } }
+  @keyframes hero-in-rtl { from { opacity: 0; transform: translateX(24px); filter: blur(6px); } }
+
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    z-index: 1;
+  }
+  .cue-star {
+    width: 1.1rem;
+    height: 1.1rem;
+    background: var(--rose);
+    -webkit-mask: var(--star) center / contain no-repeat;
+    mask: var(--star) center / contain no-repeat;
+    animation: cue 2.8s ease-in-out infinite;
+  }
+  @keyframes cue {
+    0%, 100% { transform: translateY(-4px) rotate(0deg); opacity: 0.6; }
+    50% { transform: translateY(6px) rotate(45deg); opacity: 1; }
+  }
+
+  /* ---------- Bands ---------- */
+  .band { position: relative; isolation: isolate; padding-block: var(--space-6); }
+  .band-sun { background: linear-gradient(180deg, var(--plaster) 0, var(--sun-wash) 7rem, var(--sun-wash) calc(100% - 7rem), var(--plaster) 100%); }
+  .band-sage { background: var(--sage-wash); }
+  .band-lilac { background: var(--lilac-wash); }
+  .band-head { max-width: 44rem; margin-bottom: var(--space-4); }
+  .band-head p { margin-top: var(--space-2); color: var(--ink-soft); }
+  .band-head.center { margin-inline: auto; text-align: center; }
+  .band-more { margin-top: var(--space-4); font-weight: 650; }
+  .band-more.center { text-align: center; }
+
+  /* ---------- Belonging ---------- */
+  .belonging { position: relative; overflow: hidden; padding-block: var(--space-6); }
+  .watermark {
+    position: absolute;
+    right: -2vw;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: clamp(8rem, 22vw, 20rem);
+    line-height: 1;
+    color: var(--plaster-deep);
+    pointer-events: none;
+    user-select: none;
+    z-index: -1;
+  }
+  .who-grid { display: grid; gap: var(--space-3); }
+  @media (min-width: 56rem) {
+    .who-grid { grid-template-columns: 0.85fr 1.15fr; gap: var(--space-5); align-items: start; }
+  }
+  .who-copy .lede { color: var(--ink); max-width: none; margin-bottom: 1em; }
+  .who-copy > p:not(.lede) { max-width: var(--measure); }
+  .who-chips { list-style: none; padding: 0; margin: var(--space-4) 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .who-chips li {
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    background: var(--plaster);
+    border: 1.5px dashed var(--rose);
+    font-weight: 650;
+    font-size: var(--step--1);
+  }
+
+  /* ---------- Principles: the courtyard at dusk ---------- */
+  .band-dusk {
+    background: var(--dusk);
+    color: var(--on-dusk);
+    --ink: var(--on-dusk);
+    --ink-soft: var(--on-dusk-soft);
+    --light-tint: #6a5784;
+    --light-opacity: 0.55;
+    --rose: #d9a7b9;
+    --focus: #f0b9cf;
+    margin-top: 3rem;
+  }
+  .band-dusk a { color: var(--on-dusk); }
+  /* The top edge is a row of small arches, like a courtyard arcade */
+  .arcade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -2.5rem;
+    height: 2.6rem;
+    background: var(--dusk);
+    -webkit-mask: radial-gradient(circle at 50% 100%, #000 69%, transparent 70%) 0 100% / 5rem 5rem repeat-x;
+    mask: radial-gradient(circle at 50% 100%, #000 69%, transparent 70%) 0 100% / 5rem 5rem repeat-x;
+  }
+  .dusk-inner { position: relative; z-index: 1; }
+  .pr-ur { font-size: var(--step-1); margin-top: 0.25rem !important; }
+  .pr-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+    max-width: 66rem;
+    margin-inline: auto;
+  }
+  @media (min-width: 56rem) {
+    .pr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 0.9rem; }
+  }
+  .pr {
+    background: color-mix(in oklab, var(--on-dusk) 7%, transparent);
+    border: 1px solid color-mix(in oklab, var(--on-dusk) 14%, transparent);
+    border-radius: 22px;
+    transition: background-color 220ms ease-out, border-color 220ms ease-out;
+  }
+  .pr:hover { border-color: color-mix(in oklab, var(--on-dusk) 30%, transparent); }
+  .pr[open] { background: color-mix(in oklab, var(--on-dusk) 11%, transparent); }
+  .pr summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.2rem;
+    cursor: pointer;
+    list-style: none;
+    border-radius: 22px;
+  }
+  .pr summary::-webkit-details-marker { display: none; }
+  .pr-num {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: #3b2e4a;
+    background: #f5c6a5;
+    -webkit-mask: var(--star) center / contain no-repeat;
+    mask: var(--star) center / contain no-repeat;
+    transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .pr[open] .pr-num { transform: rotate(45deg); }
+  .pr-titles { flex: 1; display: grid; }
+  .pr-title { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.25; }
+  .pr-urdu { color: var(--on-dusk-soft); font-size: 1.05rem; line-height: 2; text-align: left; }
+  .pr-toggle {
+    flex: none;
+    position: relative;
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .pr-toggle::before, .pr-toggle::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 260ms ease-out;
+  }
+  .pr-toggle::after { transform: rotate(90deg); }
+  .pr[open] .pr-toggle::after { transform: rotate(0deg); }
+  .pr-body { padding: 0 1.3rem 1.3rem 5rem; }
+  .pr[open] .pr-body { animation: faq-open 320ms cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes faq-open { from { opacity: 0; transform: translateY(-4px); } }
+  .pr-body > p { margin-bottom: 0.8rem; }
+  .pr-body .star-list { display: grid; gap: 0.4rem; color: var(--on-dusk-soft); font-size: var(--step--1); }
+  @media (max-width: 30rem) {
+    .pr-body { padding-left: 1.3rem; }
+  }
+
+  /* ---------- Resources ---------- */
+  .res-grid { display: grid; gap: var(--space-4); }
+  @media (min-width: 60rem) {
+    .res-grid { grid-template-columns: 0.8fr 1.2fr; gap: var(--space-5); align-items: start; }
+  }
+  .check { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: baseline; }
+  .crisis { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+  .crisis-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 1rem;
+    align-items: center;
+    padding: 1.1rem 1.25rem;
+    background: var(--plaster);
+    border-radius: 22px;
+    box-shadow: 0 14px 30px -24px rgb(51 40 63 / 0.45);
+  }
+  @media (max-width: 30rem) {
+    .crisis-card { grid-template-columns: 1fr; }
+    .crisis-num { order: -1; }
+  }
+  .crisis-name { font-weight: 700; }
+  .crisis-what { color: var(--ink-soft); font-size: var(--step--1); }
+  .crisis-num {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-variant-numeric: tabular-nums;
+    color: var(--sage-deep);
+    white-space: nowrap;
+  }
+  .crisis-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .call, .copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.35rem 1.1rem;
+    border-radius: 999px;
+    font: inherit;
+    font-size: var(--step--1);
+    font-weight: 650;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .call { background: var(--sage); color: var(--on-sage); }
+  .call:hover { background: var(--sage-deep); }
+  .copy { background: transparent; color: var(--ink); border: 1.5px solid var(--plaster-edge); }
+  .copy:hover { border-color: var(--ink-soft); }
+  .res-more {
+    margin-top: var(--space-5);
+    display: grid;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid color-mix(in oklab, var(--sage) 30%, transparent);
+  }
+  @media (min-width: 56rem) {
+    .res-more { grid-template-columns: 1fr 1fr auto; gap: var(--space-5); align-items: end; }
+  }
+  .res-more h3 { margin-bottom: 0.4rem; }
+  .res-more p { color: var(--ink-soft); }
+
+  /* ---------- About ---------- */
+  .about { padding-block: var(--space-6); }
+  .about-grid { display: grid; gap: var(--space-5); }
+  @media (min-width: 60rem) {
+    .about-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+  }
+  .about h2 { margin-bottom: var(--space-3); }
+  .about .lede { color: var(--ink); max-width: none; margin-bottom: 1em; }
+  .path {
+    padding: var(--space-4);
+    background: var(--plaster-deep);
+    border-radius: 28px;
+  }
+  .path-title { margin-bottom: var(--space-3); }
+  .path-steps { list-style: none; margin: 0 0 var(--space-3); padding: 0; position: relative; }
+  .path-steps::before {
+    content: '';
+    position: absolute;
+    left: 0.55rem;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    border-left: 2px dashed var(--rose);
+  }
+  .path-steps li { position: relative; padding: 0 0 var(--space-3) 2.4rem; }
+  .path-steps li:last-child { padding-bottom: 0; }
+  .path-steps li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    background: var(--plaster-edge);
+    -webkit-mask: var(--star) center / contain no-repeat;
+    mask: var(--star) center / contain no-repeat;
+  }
+  .path-steps li.is-now::before { background: var(--sage); }
+  .path-when { display: block; font-weight: 700; }
+  .path-steps p { color: var(--ink-soft); }
+
+  /* ---------- Questions ---------- */
+  .faq-grid { display: grid; gap: var(--space-3); }
+  @media (min-width: 60rem) {
+    .faq-grid { grid-template-columns: 0.75fr 1.25fr; gap: var(--space-5); align-items: start; }
+    .faq-grid .band-head { position: sticky; top: 7rem; }
+  }
+
+  /* ---------- Take part: a doorway ---------- */
+  .take { padding-block: var(--space-6) var(--space-4); }
+  .door {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    max-width: 56rem;
+    margin-inline: auto;
+    padding: clamp(6rem, 4rem + 10vw, 11rem) clamp(1.25rem, 5vw, 4.5rem) var(--space-5);
+    background: var(--plaster-deep);
+    border-radius: var(--arch);
+    box-shadow: inset 0 0 0 1px var(--plaster-edge);
+  }
+  .door :global(.jaali-svg) { opacity: 0.45; }
+  .door-inner { position: relative; z-index: 1; max-width: 38rem; margin-inline: auto; text-align: center; }
+  .door-ur { font-size: var(--step-2); color: var(--ink-soft); }
+  .door-lede { margin: var(--space-2) auto var(--space-4); color: var(--ink-soft); max-width: 52ch; }
+</style>

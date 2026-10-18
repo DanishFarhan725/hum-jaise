@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+---
+<Base title="About" description="Who is behind Hum Jaise, what it is, and what it isn't.">
+  <PageIntro title="About Hum Jaise" urdu="ہم جیسے کے بارے میں">
+    <p>
+      Hum Jaise means "people like us". It's a small, quiet corner of the internet for neurodivergent
+      people in Pakistan, and anyone who sees themselves in that.
+    </p>
+  </PageIntro>
+
+  <div class="wrap about">
+    <section data-reveal aria-labelledby="who-title">
+      <h2 id="who-title">Who we are</h2>
+      <div class="prose">
+        <p>
+          We're a small group of neurodivergent people and people close to us, here in Pakistan. For
+          now we've chosen not to put our names on the site. Some of us aren't open about being
+          neurodivergent everywhere in our lives, and we'd like the people who come here to have that
+          same choice.
+        </p>
+        <p>
+          We're not doctors, therapists or an organisation. We're peers, building something we wish we'd
+          had sooner.
+        </p>
+      </div>
+    </section>
+
+    <section data-reveal aria-labelledby="why-title">
+      <h2 id="why-title">Why this exists</h2>
+      <div class="prose">
+        <p>
+          A lot of us grew up being called difficult, lazy, too sensitive, too much, or not enough,
+          long before anyone had a better word. Much of what's written about neurodivergence comes from
+          other countries and doesn't always sound like life here: our families, our schools, our
+          gatherings, our languages.
+        </p>
+        <p>
+          We wanted a place where you don't have to translate yourself. Where you can read something
+          and think, "oh, that's me", and feel a little less alone.
+        </p>
+      </div>
+    </section>
+
+    <section data-reveal aria-labelledby="is-title">
+      <h2 id="is-title">What this is, and what it isn't</h2>
+      <div class="is-grid">
+        <div>
+          <h3>It is</h3>
+          <ul class="star-list">
+            <li>A welcome, whether or not you have a diagnosis</li>
+            <li>Shared experiences and carefully chosen resources</li>
+            <li>The start of a peer community, built slowly and with care</li>
+          </ul>
+        </div>
+        <div>
+          <h3>It isn't</h3>
+          <ul class="star-list">
+            <li>A medical service, a diagnosis or a treatment</li>
+            <li>A crisis line (see <a href="/resources/#right-now">where to turn right now</a>)</li>
+            <li>Selling anything, or collecting your data</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section data-reveal aria-labelledby="next-title">
+      <h2 id="next-title">What we hope comes next</h2>
+      <div class="prose">
+        <p>
+          Today this is a simple website. Over time, and only if we can do it safely, we hope to add:
+        </p>
+        <ul class="star-list next-list">
+          <li>Accounts with a chosen name, so nobody has to use their real one</li>
+          <li>Gently moderated conversations, looked after using our <a href="/principles/">principles</a></li>
+          <li>Experiences shared by members, in their own words and with their permission</li>
+          <li>The whole site in Urdu, and more of the languages people speak here</li>
+        </ul>
+        <p>None of this exists yet. We'll say so clearly when it does.</p>
+      </div>
+    </section>
+
+    <section data-reveal aria-labelledby="contact-title">
+      <h2 id="contact-title">Getting in touch</h2>
+      <div class="prose">
+        <p>
+          The easiest way to reach us is the short form on <a href="/take-part/">Take part</a>. It
+          doesn't ask for your name.
+        </p>
+        <!-- Replace with the real contact address once one exists. -->
+        <p class="note">Email: coming soon</p>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .about section {
+    display: grid;
+    gap: var(--space-3);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--plaster-edge);
+  }
+  .about section:first-child { border-top: 0; padding-top: var(--space-3); }
+  @media (min-width: 56rem) {
+    .about section { grid-template-columns: 20rem 1fr; gap: var(--space-5); }
+  }
+  .about h2 { font-size: var(--step-2); }
+  .is-grid { display: grid; gap: var(--space-4); }
+  @media (min-width: 40rem) {
+    .is-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .is-grid h3 { margin-bottom: var(--space-2); }
+  .is-grid .star-list, .next-list { display: grid; gap: 0.6rem; }
+  .next-list { margin-block: var(--space-2); }
+</style>

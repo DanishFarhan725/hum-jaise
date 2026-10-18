@@ -1,0 +1,201 @@
+---
+import Mark from './Mark.astro';
+import ComfortPanel from './ComfortPanel.astro';
+
+// Each link scrolls to its section on the home page. The full page for each
+// section still exists and is marked current when you're on it.
+const nav = [
+  { id: 'experiences', page: '/experiences/', label: 'Experiences' },
+  { id: 'principles', page: '/principles/', label: 'Principles' },
+  { id: 'resources', page: '/resources/', label: 'Resources' },
+  { id: 'about', page: '/about/', label: 'About' },
+  { id: 'take-part', page: '/take-part/', label: 'Take part' },
+];
+const path = Astro.url.pathname;
+const isHome = path === '/';
+---
+<header class="site-header" data-header>
+  <div class="wrap bar">
+    <a class="brand" href="/" aria-label="Hum Jaise, home">
+      <Mark />
+      <span class="brand-en">Hum Jaise</span>
+      <span class="brand-ur" lang="ur" dir="rtl">ہم جیسے</span>
+    </a>
+
+    <nav id="site-nav" class="nav" aria-label="Main">
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a
+              href={isHome ? `#${item.id}` : `/#${item.id}`}
+              data-section-link={item.id}
+              aria-current={path.startsWith(item.page) ? 'page' : undefined}
+            >{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="tools">
+      <button class="pill comfort-toggle" type="button" aria-expanded="false" aria-controls="comfort-panel" data-comfort-toggle>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span class="pill-label">Reading comfort</span>
+      </button>
+      <button class="pill menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Menu</span>
+      </button>
+    </div>
+  </div>
+  <ComfortPanel />
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const nav = document.getElementById('site-nav');
+
+  function setMenu(open: boolean) {
+    btn?.setAttribute('aria-expanded', String(open));
+    nav?.classList.toggle('is-open', open);
+  }
+  btn?.addEventListener('click', () => setMenu(btn.getAttribute('aria-expanded') !== 'true'));
+  nav?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setMenu(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav?.classList.contains('is-open')) {
+      setMenu(false);
+      btn?.focus();
+    }
+  });
+
+  // The header gains a solid ground once you start scrolling
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    padding-block: 0.75rem;
+    transition: background-color 240ms ease-out, box-shadow 240ms ease-out;
+  }
+  .site-header.is-scrolled {
+    background: color-mix(in oklab, var(--plaster) 94%, transparent);
+    box-shadow: 0 1px 0 var(--plaster-edge), 0 12px 30px -24px rgb(51 40 63 / 0.4);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    min-height: 48px;
+    white-space: nowrap;
+    margin-right: auto;
+  }
+  .brand-en { font-family: var(--font-display); font-size: 1.35rem; letter-spacing: -0.01em; }
+  .brand-ur { font-size: 1.15rem; color: var(--ink-soft); line-height: 1; padding-top: 0.35em; }
+
+  .tools { display: flex; gap: 0.5rem; }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--plaster-edge);
+    background: var(--plaster);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--step--1);
+    font-weight: 650;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 160ms ease-out, background-color 160ms ease-out;
+  }
+  .pill:hover { border-color: var(--ink-soft); }
+  .pill[aria-expanded='true'] { border-color: var(--sage); background: var(--sage-wash); }
+
+  /* Small screens: the menu drops down over the page */
+  .nav {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: var(--gutter);
+    right: var(--gutter);
+    padding: 0.5rem var(--space-3);
+    background: var(--plaster);
+    border: 1px solid var(--plaster-edge);
+    border-radius: 22px;
+    box-shadow: 0 24px 60px -24px rgb(51 40 63 / 0.45);
+  }
+  .nav.is-open { display: block; animation: drop 240ms cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
+  .nav ul { list-style: none; margin: 0; padding: 0; display: grid; }
+  .nav li + li { border-top: 1px solid var(--plaster-edge); }
+  .nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 52px;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  /* You are here: the lattice star, not only a colour */
+  .nav a[aria-current]::before,
+  .nav a.is-active::before {
+    content: '';
+    width: 0.7rem;
+    height: 0.7rem;
+    flex: none;
+    background: var(--rose);
+    -webkit-mask: var(--star) center / contain no-repeat;
+    mask: var(--star) center / contain no-repeat;
+  }
+
+  @media (min-width: 72rem) {
+    .nav {
+      display: block;
+      position: static;
+      padding: 0;
+      background: none;
+      border: 0;
+      box-shadow: none;
+      flex: 1;
+    }
+    .nav ul { display: flex; justify-content: center; gap: 0.25rem; }
+    .nav li + li { border: 0; }
+    .nav a {
+      min-height: 44px;
+      padding: 0 0.85rem;
+      border-radius: 999px;
+      gap: 0.4rem;
+      transition: background-color 160ms ease-out;
+    }
+    .nav a:hover { background: var(--plaster-deep); }
+    .nav a.is-active, .nav a[aria-current] { background: var(--plaster-deep); }
+    .brand { margin-right: 0; }
+    .menu-toggle { display: none; }
+  }
+  @media (max-width: 30rem) {
+    .brand-ur { display: none; }
+    .pill { padding-inline: 0.8rem; }
+    .pill-label {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+  }
+</style>

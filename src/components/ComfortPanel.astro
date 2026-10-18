@@ -1,0 +1,243 @@
+---
+// Reading comfort. Opens as a panel anchored under its button in the sticky
+// header, so it stays in the same place on every page and never pushes
+// content around. Choices are saved only in this browser (localStorage).
+const groups = [
+  {
+    key: 'text',
+    legend: 'Text size',
+    options: [
+      { value: 'standard', label: 'Standard' },
+      { value: 'larger', label: 'Larger' },
+      { value: 'largest', label: 'Largest' },
+    ],
+  },
+  {
+    key: 'spacing',
+    legend: 'Spacing',
+    options: [
+      { value: 'standard', label: 'Standard' },
+      { value: 'roomy', label: 'Roomy' },
+    ],
+  },
+  {
+    key: 'theme',
+    legend: 'Colours',
+    options: [
+      { value: 'day', label: 'Day' },
+      { value: 'night', label: 'Night' },
+      { value: 'auto', label: 'Match my device' },
+    ],
+  },
+  {
+    key: 'motion',
+    legend: 'Movement',
+    options: [
+      { value: 'auto', label: 'Gentle' },
+      { value: 'reduce', label: 'Keep still' },
+    ],
+  },
+  {
+    key: 'light',
+    legend: 'Sunlight pattern',
+    options: [
+      { value: 'on', label: 'Show' },
+      { value: 'off', label: 'Hide' },
+    ],
+  },
+];
+---
+<div id="comfort-panel" class="comfort" role="region" aria-labelledby="comfort-title" hidden>
+  <div class="comfort-head">
+    <h2 id="comfort-title" class="comfort-title">Reading comfort</h2>
+    <button type="button" class="comfort-x" data-comfort-close aria-label="Close reading comfort">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <p class="note">Your choices stay on this device and aren't sent to anyone.</p>
+  <form class="comfort-form" data-comfort-form>
+    {groups.map((g) => (
+      <fieldset>
+        <legend>{g.legend}</legend>
+        <div class="choices">
+          {g.options.map((o, i) => (
+            <label>
+              <input type="radio" name={g.key} value={o.value} checked={i === 0} />
+              <span>{o.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+    <div class="comfort-actions">
+      <button type="button" class="reset" data-comfort-reset>Reset</button>
+      <button type="button" class="done" data-comfort-close>Done</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const KEY = 'hj-comfort';
+  const defaults: Record<string, string> = { text: 'standard', spacing: 'standard', theme: 'day', motion: 'auto', light: 'on' };
+  const root = document.documentElement;
+  const panel = document.getElementById('comfort-panel');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-comfort-toggle]');
+  const form = document.querySelector<HTMLFormElement>('[data-comfort-form]');
+
+  function read(): Record<string, string> {
+    try {
+      return { ...defaults, ...JSON.parse(localStorage.getItem(KEY) || '{}') };
+    } catch {
+      return { ...defaults };
+    }
+  }
+  function apply(prefs: Record<string, string>) {
+    for (const [k, v] of Object.entries(prefs)) {
+      if (v === defaults[k]) root.removeAttribute(`data-${k}`);
+      else root.setAttribute(`data-${k}`, v);
+    }
+  }
+  function save(prefs: Record<string, string>) {
+    try { localStorage.setItem(KEY, JSON.stringify(prefs)); } catch { /* storage unavailable: still applies for this visit */ }
+  }
+  function sync(prefs: Record<string, string>) {
+    if (!form) return;
+    for (const [k, v] of Object.entries(prefs)) {
+      const input = form.querySelector<HTMLInputElement>(`input[name="${k}"][value="${v}"]`);
+      if (input) input.checked = true;
+    }
+  }
+
+  let prefs = read();
+  sync(prefs);
+
+  function setOpen(open: boolean, returnFocus = false) {
+    if (!panel || !toggle) return;
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    if (open) panel.querySelector<HTMLInputElement>('input:checked')?.focus();
+    else if (returnFocus) toggle.focus();
+  }
+
+  toggle?.addEventListener('click', () => setOpen(panel?.hidden ?? false));
+  form?.addEventListener('change', (e) => {
+    const t = e.target as HTMLInputElement;
+    prefs = { ...prefs, [t.name]: t.value };
+    apply(prefs);
+    save(prefs);
+  });
+  form?.querySelector('[data-comfort-reset]')?.addEventListener('click', () => {
+    prefs = { ...defaults };
+    apply(prefs);
+    save(prefs);
+    sync(prefs);
+  });
+  panel?.querySelectorAll('[data-comfort-close]').forEach((b) => b.addEventListener('click', () => setOpen(false, true)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && panel && !panel.hidden) setOpen(false, true);
+  });
+  // Clicking outside closes it, like any dropdown
+  document.addEventListener('pointerdown', (e) => {
+    if (!panel || panel.hidden) return;
+    const t = e.target as Node;
+    if (!panel.contains(t) && !toggle?.contains(t)) setOpen(false);
+  });
+</script>
+
+<style>
+  .comfort {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: var(--gutter);
+    width: min(26rem, calc(100vw - 2rem));
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-3);
+    background: var(--plaster);
+    border: 1px solid var(--plaster-edge);
+    border-radius: 22px;
+    box-shadow: 0 24px 60px -24px rgb(51 40 63 / 0.45), 0 2px 6px rgb(51 40 63 / 0.08);
+    z-index: 20;
+    animation: comfort-in 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: top right;
+  }
+  @media (max-width: 30rem) {
+    .comfort { right: 1rem; }
+  }
+  @keyframes comfort-in {
+    from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  }
+  .comfort-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .comfort-title { font-size: var(--step-1); }
+  .comfort-x {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .comfort-x:hover { background: var(--plaster-deep); }
+  .comfort > .note { margin: 0.25rem 0 var(--space-3); }
+  .comfort-form { display: grid; gap: var(--space-3); }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { font-weight: 700; margin-bottom: 0.5rem; padding: 0; font-size: var(--step--1); }
+  .choices { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  label { position: relative; cursor: pointer; }
+  input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  label span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    min-height: 44px;
+    padding: 0.35em 1em;
+    border-radius: 999px;
+    border: 1.5px solid var(--plaster-edge);
+    background: var(--plaster);
+    font-size: var(--step--1);
+    font-weight: 600;
+    transition: border-color 160ms ease-out, background-color 160ms ease-out;
+  }
+  label:hover span { border-color: var(--ink-soft); }
+  /* Chosen state is a mark (the lattice star), not only a colour */
+  input:checked + span {
+    border-color: var(--sage);
+    background: var(--sage-wash);
+  }
+  input:checked + span::before {
+    content: '';
+    width: 0.8em;
+    height: 0.8em;
+    background: var(--sage);
+    -webkit-mask: var(--star) center / contain no-repeat;
+    mask: var(--star) center / contain no-repeat;
+  }
+  input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .comfort-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--plaster-edge);
+  }
+  .comfort-actions button {
+    font: inherit;
+    font-weight: 650;
+    min-height: 44px;
+    padding: 0.4em 1.3em;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .reset { background: transparent; color: var(--ink); border: 1.5px solid var(--plaster-edge); }
+  .done { background: var(--sage); color: var(--on-sage); border: 0; }
+</style>

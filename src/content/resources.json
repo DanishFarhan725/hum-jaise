@@ -1,0 +1,70 @@
+[
+  {
+    "id": "rescue-1122",
+    "group": "right-now",
+    "name": "Rescue 1122",
+    "description": "Emergency rescue and ambulance service. Call if you or someone near you is in immediate danger.",
+    "phone": "1122",
+    "verified": false,
+    "order": 1
+  },
+  {
+    "id": "police-15",
+    "group": "right-now",
+    "name": "Police emergency, 15",
+    "description": "For immediate danger where police help is needed.",
+    "phone": "15",
+    "verified": false,
+    "order": 2
+  },
+  {
+    "id": "umang",
+    "group": "right-now",
+    "name": "Umang mental health helpline",
+    "description": "A Pakistan-based helpline for emotional support, reported to be free and open around the clock. Numbers listed online differ between sources, so check the current one on their website.",
+    "phone": "0311 7786264",
+    "url": "https://umang.com.pk",
+    "source": "https://www.emro.who.int/mhps/mental_health_professionals.html",
+    "verified": false,
+    "order": 3
+  },
+  {
+    "id": "pca",
+    "group": "pakistan",
+    "name": "Pakistan Centre for Autism",
+    "description": "Assessment, therapy and parent training for autistic people and others with neurodevelopmental differences. Services appear to be mainly for children.",
+    "where": "Karachi (PECHS and Gulistan-e-Johar)",
+    "url": "https://pcforautism.org/",
+    "verified": false,
+    "order": 4
+  },
+  {
+    "id": "kazim-trust",
+    "group": "pakistan",
+    "name": "Kazim Anwar ADHD Trust",
+    "description": "A not-for-profit working on ADHD and learning differences such as dyslexia, with screening and workshops for families and teachers.",
+    "where": "Karachi",
+    "url": "https://chadd.org/attention-article/empowering-children-who-learn-differently-in-pakistan/",
+    "source": "https://chadd.org/attention-article/empowering-children-who-learn-differently-in-pakistan/",
+    "verified": false,
+    "order": 5
+  },
+  {
+    "id": "pims-autism",
+    "group": "pakistan",
+    "name": "Autism centre at PIMS",
+    "description": "News reports describe a public autism centre at the Pakistan Institute of Medical Sciences offering assessment and therapies. Confirm services and whether adults are seen before visiting.",
+    "where": "Islamabad",
+    "verified": false,
+    "order": 6
+  },
+  {
+    "id": "adda-south-asian",
+    "group": "online",
+    "name": "South Asian ADHD peer support group (ADDA)",
+    "description": "An online peer group for South Asian adults with ADHD, run by the Attention Deficit Disorder Association. Membership of ADDA may be required.",
+    "url": "https://add.org/south-asians-adhd-peer-support-group/",
+    "verified": false,
+    "order": 7
+  }
+]

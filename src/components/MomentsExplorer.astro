@@ -1,0 +1,213 @@
+---
+// Tabs of everyday moments. Visitors can tap "Me too" on any that feel familiar.
+// Nothing is saved or sent: the count lives only in this page view.
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('experiences');
+const settings = [
+  { key: 'home', label: 'At home', title: 'At home and at family gatherings' },
+  { key: 'study-work', label: 'School & work', title: 'At school, college and work' },
+  { key: 'senses', label: 'Senses', title: 'In your body and senses' },
+  { key: 'mind', label: 'Your mind', title: 'In how your mind works' },
+  { key: 'told', label: 'What people say', title: 'In what people tell you about yourself' },
+] as const;
+---
+<div class="explorer" data-explorer>
+  <div class="tabs" role="tablist" aria-label="Where these moments happen">
+    {settings.map((s, i) => (
+      <button
+        type="button"
+        role="tab"
+        id={`tab-${s.key}`}
+        aria-controls={`panel-${s.key}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        tabindex={i === 0 ? 0 : -1}
+      >{s.label}</button>
+    ))}
+  </div>
+
+  {settings.map((s, i) => (
+    <div
+      class="panel"
+      role="tabpanel"
+      id={`panel-${s.key}`}
+      aria-labelledby={`tab-${s.key}`}
+      hidden={i !== 0}
+      tabindex="0"
+    >
+      <h3 class="visually-hidden">{s.title}</h3>
+      <ul class="moments" role="list">
+        {all.filter((e) => e.data.setting === s.key).map((e) => (
+          <li class="moment">
+            <p>{e.data.text}</p>
+            <button type="button" class="metoo" aria-pressed="false" data-metoo>
+              <span class="metoo-star" aria-hidden="true"></span>
+              <span>Me too</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+
+  <div class="tally" aria-live="polite">
+    <p class="tally-text" data-tally>Tap <strong>Me too</strong> on any moment that feels familiar.</p>
+    <p class="note">Nothing you tap is saved or sent anywhere.</p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-explorer]').forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const select = (tab: HTMLButtonElement, focus = true) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = root.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`);
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tab.focus();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab, false));
+      tab.addEventListener('keydown', (e) => {
+        const k = e.key;
+        let next = -1;
+        if (k === 'ArrowRight') next = (i + 1) % tabs.length;
+        else if (k === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+        else if (k === 'Home') next = 0;
+        else if (k === 'End') next = tabs.length - 1;
+        if (next > -1) {
+          e.preventDefault();
+          select(tabs[next]);
+        }
+      });
+    });
+
+    const tally = root.querySelector<HTMLElement>('[data-tally]');
+    const update = () => {
+      const n = root.querySelectorAll('[data-metoo][aria-pressed="true"]').length;
+      if (!tally) return;
+      if (n === 0) tally.innerHTML = 'Tap <strong>Me too</strong> on any moment that feels familiar.';
+      else if (n === 1) tally.innerHTML = '<strong>1 moment</strong> felt familiar. That is enough to belong here.';
+      else tally.innerHTML = `<strong>${n} moments</strong> felt familiar. You're not the only one. You're in the right place.`;
+    };
+    root.querySelectorAll<HTMLButtonElement>('[data-metoo]').forEach((b) =>
+      b.addEventListener('click', () => {
+        b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+        update();
+      }),
+    );
+  });
+</script>
+
+<style>
+  .tabs {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0.35rem;
+    margin-inline: -0.35rem;
+    margin-bottom: var(--space-3);
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  [role='tab'] {
+    flex: none;
+    min-height: 46px;
+    padding: 0.4rem 1.1rem;
+    border-radius: 999px;
+    border: 1.5px solid color-mix(in oklab, var(--ink) 18%, transparent);
+    background: color-mix(in oklab, var(--plaster) 70%, transparent);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--step--1);
+    font-weight: 650;
+    cursor: pointer;
+    transition: background-color 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out;
+  }
+  [role='tab']:hover { border-color: var(--ink-soft); }
+  [role='tab'][aria-selected='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--plaster);
+  }
+
+  .panel:focus-visible { outline-offset: 8px; }
+  .moments {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  @media (min-width: 52rem) {
+    .moments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .moment {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background: var(--plaster);
+    border-radius: 22px 22px 22px 6px;
+    box-shadow: 0 1px 0 color-mix(in oklab, var(--ink) 8%, transparent), 0 14px 30px -22px rgb(51 40 63 / 0.35);
+    animation: moment-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .moment:nth-child(2) { animation-delay: 50ms; }
+  .moment:nth-child(3) { animation-delay: 100ms; }
+  .moment:nth-child(4) { animation-delay: 150ms; }
+  .moment:nth-child(5) { animation-delay: 200ms; }
+  .moment:nth-child(6) { animation-delay: 250ms; }
+  @keyframes moment-in { from { opacity: 0; transform: translateY(10px); } }
+  .moment p {
+    font-family: var(--font-display);
+    font-size: calc(1.25rem * var(--text-scale));
+    line-height: 1.4;
+  }
+
+  .metoo {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.3rem 1rem 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--plaster-edge);
+    background: transparent;
+    color: var(--ink-soft);
+    font: inherit;
+    font-size: var(--step--1);
+    font-weight: 650;
+    cursor: pointer;
+    transition: background-color 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out;
+  }
+  .metoo:hover { border-color: var(--rose); color: var(--ink); }
+  .metoo-star {
+    width: 1rem;
+    height: 1rem;
+    background: var(--plaster-edge);
+    -webkit-mask: var(--star) center / contain no-repeat;
+    mask: var(--star) center / contain no-repeat;
+    transition: background-color 180ms ease-out, transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .metoo[aria-pressed='true'] {
+    background: var(--sun-wash);
+    border-color: var(--rose);
+    color: var(--ink);
+  }
+  .metoo[aria-pressed='true'] .metoo-star {
+    background: var(--rose);
+    transform: rotate(45deg) scale(1.2);
+  }
+
+  .tally {
+    margin-top: var(--space-4);
+    display: grid;
+    gap: 0.25rem;
+  }
+  .tally-text { font-size: var(--step-1); }
+</style>

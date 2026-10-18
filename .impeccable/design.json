@@ -1,0 +1,31 @@
+{
+  "name": "Hum Jaise",
+  "world": "Courtyard (sehan) wall with sunlight through an arched jaali window",
+  "colorStrategy": "full-palette-soft",
+  "themes": {
+    "day": {
+      "plaster": "#f3edf4", "plasterDeep": "#e8deeb", "plasterEdge": "#d8cbdc",
+      "ink": "#33283f", "inkSoft": "#594b64",
+      "sage": "#4d6a58", "sageDeep": "#3c5446", "onSage": "#f7f3f8",
+      "sun": "#f5c6a5", "sunStrong": "#eeb48f", "rose": "#b97f93", "focus": "#8a4f68"
+    },
+    "night": {
+      "plaster": "#221b2a", "plasterDeep": "#2c2436", "plasterEdge": "#43384f",
+      "ink": "#eee6f1", "inkSoft": "#c6b9ce",
+      "sage": "#9fc4ac", "sageDeep": "#b6d5c0", "onSage": "#1c1722",
+      "sun": "#4b4369", "sunStrong": "#5c5380", "rose": "#c99aab", "focus": "#e3a8c0"
+    }
+  },
+  "type": {
+    "display": "Young Serif 400",
+    "body": "Atkinson Hyperlegible Next Variable",
+    "urdu": "Gulzar (Nastaliq)",
+    "bodySize": "1.125rem",
+    "leading": 1.6,
+    "measure": "66ch"
+  },
+  "ornament": "Eight-point jaali star (two squares, one rotated 45deg) used for light, thresholds, bullets and state marks",
+  "shapes": { "arch": "999px 999px 0 0", "pill": "999px", "radius": "14px" },
+  "motion": "Single light-arrival fade (2.6s, expo-out); reduced-motion and comfort setting disable it",
+  "sources": ["src/styles/global.css", "src/components/JaaliLight.astro", "src/components/ComfortPanel.astro"]
+}

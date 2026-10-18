@@ -1,0 +1,31 @@
+[
+  { "id": "shaadi-dhol", "setting": "home", "featured": true, "text": "At a shaadi the dhol starts, the lights flash, everyone is delighted, and you're quietly counting the minutes until you can stand outside for a while." },
+  { "id": "why-so-quiet", "setting": "home", "text": "Someone asks why you're so quiet, and the whole room turns to wait for your answer." },
+  { "id": "nakhray", "setting": "home", "featured": true, "text": "You can't eat something because of its texture, and somebody calls it nakhray. Again." },
+  { "id": "eid-recovery", "setting": "home", "text": "You spend all of Eid, or a wedding, or a family visit being ‘normal’, then need the whole next day in a dark room to recover." },
+  { "id": "sab-ke-saath", "setting": "home", "featured": true, "text": "You finally find the words to explain, and someone says ‘sab ke saath hota hai’, it happens to everyone." },
+  { "id": "a-bit-different", "setting": "home", "text": "The conversation about your future turns to whether you're ‘a bit different’, and everyone nods as if that settles something." },
+
+  { "id": "report-card", "setting": "study-work", "featured": true, "text": "Every report card said some version of ‘intelligent, but careless’." },
+  { "id": "the-board", "setting": "study-work", "text": "You understood the lesson perfectly, then lost all of it the moment you had to copy it off the board." },
+  { "id": "same-paragraph", "setting": "study-work", "text": "You read the same paragraph four times and it still won't stay." },
+  { "id": "naughty-one", "setting": "study-work", "text": "You were the ‘naughty one’ in class for not being able to sit still, and after a while you believed it." },
+  { "id": "phone-call", "setting": "study-work", "featured": true, "text": "You rehearse a phone call three times before you dial, then apologise for taking up their time." },
+  { "id": "office-noise", "setting": "study-work", "text": "The fan clicking, someone's ringtone, the smell of lunch, three conversations at once. You get nothing done, and it looks like laziness." },
+
+  { "id": "tube-light", "setting": "senses", "featured": true, "text": "The tube light is buzzing and nobody else seems to hear it." },
+  { "id": "sudden-hug", "setting": "senses", "text": "A hug you didn't expect feels like too much, and then you feel guilty for flinching." },
+  { "id": "seam", "setting": "senses", "text": "There's a seam or a label somewhere in your clothes, and it's all you can think about." },
+  { "id": "bazaar", "setting": "senses", "text": "Horns, traffic, a crowded bazaar. By the time you get home there's nothing left of you for anyone." },
+
+  { "id": "twelve-tabs", "setting": "mind", "featured": true, "text": "Your mind has twelve tabs open, and the one thing that matters is the one you can't make yourself start." },
+  { "id": "obsessed", "setting": "mind", "text": "You love something with your whole heart, and someone calls you ‘obsessed’ as if it's a problem." },
+  { "id": "replay", "setting": "mind", "text": "You're still replaying a conversation from last week, trying to work out if you said it wrong." },
+  { "id": "kitchen", "setting": "mind", "text": "When you're focused you forget to eat. When you're not, you forget why you walked into the kitchen." },
+  { "id": "rulebook", "setting": "mind", "featured": true, "text": "Everyone else seems to have a rulebook for talking to people, and nobody ever gave you a copy." },
+
+  { "id": "explanations", "setting": "told", "featured": true, "text": "You've been told it's laziness, too much phone, bad upbringing or nazar. Nobody asked what it's actually like for you." },
+  { "id": "dont-look", "setting": "told", "text": "You mention a diagnosis and someone says, ‘But you don't look like it.’" },
+  { "id": "other-countries", "setting": "told", "text": "You've only ever read about this in English, about people in other countries, and wondered whether it counts for you too." },
+  { "id": "allowed", "setting": "told", "featured": true, "text": "You don't have a diagnosis. You're still wondering, and you're not sure you're allowed to relate. You are." }
+]

@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+---
+<Base title="Privacy" description="What Hum Jaise collects (very little) and why.">
+  <PageIntro title="Privacy, in plain words" urdu="رازداری، سیدھے لفظوں میں">
+    <p>We collect as little as we can. Here's exactly what that means.</p>
+  </PageIntro>
+
+  <div class="wrap privacy prose">
+    <h2>Just visiting</h2>
+    <p>
+      No tracking, no analytics, no advertising and no cookies. Our fonts are stored on this site, so
+      your browser doesn't contact Google or anyone else to show them. Like almost every website, our
+      host (Netlify) may keep basic technical logs, such as IP addresses, for security.
+    </p>
+
+    <h2>Reading comfort settings</h2>
+    <p>
+      If you change text size, spacing, theme, movement or the light pattern, that choice is saved in
+      your own browser so it's remembered next time. It never leaves your device. Clearing your browser
+      data removes it.
+    </p>
+
+    <h2>If you write to us</h2>
+    <p>
+      The form only needs your message. A way to reply is optional. Messages are stored by Netlify Forms
+      and read by the small group who run Hum Jaise. We don't publish, sell or share them. We won't quote
+      any part of your message anywhere without asking you first.
+    </p>
+    <p>
+      We can't promise complete anonymity. No website can. Please leave out names and details that could
+      identify you or other people. If you'd like a message deleted, write to us again and say so.
+    </p>
+
+    <h2>Later on</h2>
+    <p>
+      If we add accounts or discussions, we'll update this page before they open, and explain what
+      changes in plain words.
+    </p>
+    <p class="note">Last updated October 2026.</p>
+  </div>
+</Base>
+
+<style>
+  .privacy h2 { font-size: var(--step-2); margin: var(--space-4) 0 var(--space-2); }
+  .privacy h2:first-child { margin-top: 0; }
+</style>

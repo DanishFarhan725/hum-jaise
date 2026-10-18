@@ -1,0 +1,31 @@
+---
+import JaaliLight from './JaaliLight.astro';
+interface Props {
+  title: string;
+  urdu?: string;
+}
+const { title, urdu } = Astro.props;
+---
+<section class="intro">
+  <JaaliLight placement="intro" />
+  <div class="wrap intro-inner">
+    <h1>{title}</h1>
+    {urdu && <p class="intro-ur" lang="ur" dir="rtl">{urdu}</p>}
+    <div class="intro-copy"><slot /></div>
+  </div>
+</section>
+
+<style>
+  .intro {
+    position: relative;
+    isolation: isolate;
+    margin-top: -4.5rem;
+    padding-top: calc(4.5rem + clamp(2.5rem, 1.5rem + 5vw, 5.5rem));
+    padding-bottom: clamp(3rem, 2rem + 4vw, 5rem);
+  }
+  .intro-inner { position: relative; z-index: 1; }
+  h1 { font-size: var(--step-4); max-width: 18ch; }
+  .intro-ur { font-size: var(--step-2); color: var(--ink-soft); width: fit-content; max-width: 100%; text-align: right; margin: var(--space-1) 0 0 clamp(0rem, 10vw, 7rem); }
+  .intro-copy { margin-top: var(--space-3); font-size: var(--step-1); line-height: 1.5; max-width: 44ch; }
+  .intro-copy :global(p + p) { margin-top: 0.75em; }
+</style>

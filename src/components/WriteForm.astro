@@ -1,0 +1,161 @@
+---
+// The one place people can send something. Netlify Forms; only the message is required.
+// Used on the home page and on /take-part/ (same form name, same fields).
+interface Props { idPrefix?: string }
+const { idPrefix = 'wf' } = Astro.props;
+---
+<div class="write-box" data-write-box>
+<form
+  class="form"
+  data-write-form
+  name="write-to-us"
+  method="POST"
+  action="/thanks/"
+  data-netlify="true"
+  netlify-honeypot="extra-field"
+>
+  <input type="hidden" name="form-name" value="write-to-us" />
+  <p class="visually-hidden" aria-hidden="true">
+    <label>Leave this empty <input name="extra-field" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  <div class="field">
+    <label for={`${idPrefix}-message`}>Your message</label>
+    <p class="hint" id={`${idPrefix}-message-hint`}>Take your time. There's no word limit and no wrong way to say it.</p>
+    <textarea id={`${idPrefix}-message`} name="message" rows="7" required aria-describedby={`${idPrefix}-message-hint`}></textarea>
+  </div>
+
+  <div class="field">
+    <label for={`${idPrefix}-reply`}>How can we reply? <span class="optional">(optional)</span></label>
+    <p class="hint" id={`${idPrefix}-reply-hint`}>An email address, if you'd like an answer. Leave it empty to stay anonymous.</p>
+    <input id={`${idPrefix}-reply`} name="reply" type="text" autocomplete="email" inputmode="email" aria-describedby={`${idPrefix}-reply-hint`} />
+  </div>
+
+  <div class="form-foot">
+    <button class="button" type="submit" data-send>Send message</button>
+    <p class="note">We won't publish anything you send without asking. <a href="/privacy/">Privacy notes</a></p>
+  </div>
+  <p class="form-error" role="alert" data-form-error hidden></p>
+</form>
+
+<div class="sent" data-sent hidden tabindex="-1">
+  <h3 class="sent-title">Your message is with us</h3>
+  <p class="sent-ur" lang="ur" dir="rtl">آپ کا پیغام ہم تک پہنچ گیا</p>
+  <p>Thank you for writing. One of us will read it. If you left a way to reply, we'll get back to you when we can, which may take a little while.</p>
+  <button type="button" class="sent-again" data-write-again>Write another message</button>
+</div>
+</div>
+
+<script>
+  // Sends the form in the background so people get a clear answer on the same page.
+  // Without JavaScript, the form still posts normally and Netlify shows /thanks/.
+  document.querySelectorAll<HTMLElement>('[data-write-box]').forEach((box) => {
+    const form = box.querySelector<HTMLFormElement>('[data-write-form]');
+    const sent = box.querySelector<HTMLElement>('[data-sent]');
+    const error = box.querySelector<HTMLElement>('[data-form-error]');
+    const send = box.querySelector<HTMLButtonElement>('[data-send]');
+    if (!form || !sent || !error || !send) return;
+
+    const showError = (text: string) => {
+      error.textContent = text;
+      error.hidden = false;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      error.hidden = true;
+
+      const message = form.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
+      if (message && !message.value.trim()) {
+        showError('Please write a message before sending. Even a few words is fine.');
+        message.focus();
+        return;
+      }
+
+      const host = location.hostname;
+      if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]') {
+        showError("This is a preview copy of the site, so messages can't be sent from here. Once the site is live on Netlify, this form will deliver your message.");
+        return;
+      }
+
+      send.disabled = true;
+      send.textContent = 'Sending…';
+      try {
+        const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString();
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body,
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        form.hidden = true;
+        sent.hidden = false;
+        sent.focus();
+      } catch {
+        showError("Your message didn't send. Your words are still here, so please check your connection and try again in a moment.");
+      } finally {
+        send.disabled = false;
+        send.textContent = 'Send message';
+      }
+    });
+
+    box.querySelector('[data-write-again]')?.addEventListener('click', () => {
+      sent.hidden = true;
+      form.hidden = false;
+      form.querySelector<HTMLTextAreaElement>('textarea')?.focus();
+    });
+  });
+</script>
+
+<style>
+  .form { display: grid; gap: var(--space-3); align-content: start; text-align: left; }
+  .field label { display: block; font-weight: 700; }
+  .optional { font-weight: 400; color: var(--ink-soft); }
+  .hint { font-size: var(--step--1); color: var(--ink-soft); margin: 0.2rem 0 0.5rem; }
+  textarea, input[type='text'] {
+    width: 100%;
+    font: inherit;
+    color: var(--ink);
+    background: var(--plaster);
+    border: 1.5px solid var(--plaster-edge);
+    border-radius: 14px;
+    padding: 0.8rem 0.95rem;
+    caret-color: var(--focus);
+    transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+  }
+  textarea { resize: vertical; min-height: 9rem; line-height: var(--leading); }
+  textarea:hover, input[type='text']:hover { border-color: var(--ink-soft); }
+  textarea:focus-visible, input[type='text']:focus-visible {
+    border-color: var(--focus);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--focus) 18%, transparent);
+    outline: none;
+  }
+  textarea:user-invalid { border-color: var(--focus); }
+  .form-error {
+    padding: 0.85rem 1.1rem;
+    border-radius: 14px;
+    background: var(--sun-wash);
+    border: 1.5px solid var(--rose);
+    color: var(--ink);
+    font-size: var(--step--1);
+  }
+  .sent { text-align: left; display: grid; gap: 0.75rem; padding: var(--space-3); border-radius: 22px; background: var(--plaster); border: 1.5px solid var(--sage); }
+  .sent:focus { outline: none; }
+  .sent-title { font-size: var(--step-2); }
+  .sent-ur { color: var(--ink-soft); font-size: var(--step-1); text-align: left; }
+  .sent-again {
+    justify-self: start;
+    min-height: 44px;
+    padding: 0.4em 1.2em;
+    border-radius: 999px;
+    border: 1.5px solid var(--plaster-edge);
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .sent-again:hover { border-color: var(--ink-soft); }
+  .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+</style>

@@ -1,0 +1,183 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+
+const all = (await getCollection('resources')).sort((a, b) => a.data.order - b.data.order);
+const byGroup = (g: string) => all.filter((r) => r.data.group === g);
+
+const words = [
+  { term: 'Neurodivergent', def: "A word for people whose minds work differently from what's treated as typical. It can include autism, ADHD, dyslexia, dyspraxia, Tourette's and more. Some people use it for themselves; some don't. Both are fine." },
+  { term: 'Masking', def: 'Hiding or toning down how you naturally are so that you fit in. Many people do it for years without having a name for it, and it can be very tiring.' },
+  { term: 'Stimming', def: 'Repeated movements or sounds, like rocking, tapping or humming, that many people use to settle, focus or show feeling.' },
+  { term: 'Sensory overload', def: 'When sound, light, touch, smell or crowds become too much to take in, and everything starts to feel overwhelming.' },
+  { term: 'Shutdown or meltdown', def: 'What can happen when overload builds up: going quiet and withdrawn, or losing control of feelings. It isn\'t bad behaviour.' },
+  { term: 'Executive function', def: 'The mental skills for starting, planning, switching and finishing tasks. When these work differently, simple-sounding things can be really hard.' },
+];
+---
+<Base title="Resources" description="Places to turn in Pakistan and online, with honest notes about what we have and haven't checked.">
+  <PageIntro title="Places to turn" urdu="جہاں سے مدد مل سکتی ہے">
+    <p>
+      A small, careful list. We're peers, not professionals, and we'd rather give you a few honest
+      leads than a long list we can't stand behind.
+    </p>
+  </PageIntro>
+
+  <div class="wrap">
+    <p class="check note">
+      <span class="tag">Not yet checked</span>
+      We haven't personally confirmed these details yet. Numbers, addresses and services change,
+      so please check with the organisation before you rely on them.
+    </p>
+
+    <section data-reveal class="group urgent" id="right-now" aria-labelledby="now-title">
+      <h2 id="now-title">If you're in danger or crisis right now</h2>
+      <p class="group-intro">Hum Jaise isn't a crisis service. If you or someone near you might be hurt, please reach out to one of these now.</p>
+      <ul class="res-list" role="list">
+        {byGroup('right-now').map((r) => (
+          <li class="res">
+            <h3>{r.data.name}</h3>
+            <p>{r.data.description}</p>
+            <p class="res-meta">
+              {r.data.phone && <a class="res-phone" href={`tel:${r.data.phone.replace(/\s/g, '')}`}>Call {r.data.phone}</a>}
+              {r.data.url && <a href={r.data.url} rel="noopener noreferrer">Website</a>}
+              {!r.data.verified && <span class="tag">Not yet checked</span>}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section data-reveal class="group" aria-labelledby="pk-title">
+      <h2 id="pk-title">Organisations in Pakistan</h2>
+      <p class="group-intro">Most services we found focus on children and families. Adults are often left out, and we hope this list grows to include more places that see adults too.</p>
+      <ul class="res-list" role="list">
+        {byGroup('pakistan').map((r) => (
+          <li class="res">
+            <h3>{r.data.name}</h3>
+            {r.data.where && <p class="res-where">{r.data.where}</p>}
+            <p>{r.data.description}</p>
+            <p class="res-meta">
+              {r.data.url && <a href={r.data.url} rel="noopener noreferrer">Find out more</a>}
+              {!r.data.verified && <span class="tag">Not yet checked</span>}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section data-reveal class="group" aria-labelledby="online-title">
+      <h2 id="online-title">Online peer groups</h2>
+      <ul class="res-list" role="list">
+        {byGroup('online').map((r) => (
+          <li class="res">
+            <h3>{r.data.name}</h3>
+            <p>{r.data.description}</p>
+            <p class="res-meta">
+              {r.data.url && <a href={r.data.url} rel="noopener noreferrer">Find out more</a>}
+              {!r.data.verified && <span class="tag">Not yet checked</span>}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section data-reveal class="group two-col" aria-labelledby="assess-title">
+      <h2 id="assess-title">Thinking about an assessment?</h2>
+      <div class="prose">
+        <p>
+          You don't need an assessment to belong here. If you'd like one, it usually means seeing a
+          psychiatrist or a clinical psychologist. These questions can help when you contact someone:
+        </p>
+        <ul class="star-list asks">
+          <li>Do you assess adults, or only children?</li>
+          <li>Which differences do you assess for, such as autism, ADHD or dyslexia?</li>
+          <li>Roughly what does it cost, and how many visits does it take?</li>
+          <li>Can we talk in Urdu, English or another language I'm comfortable with?</li>
+          <li>Can I bring someone with me, or write things down instead of saying them?</li>
+        </ul>
+        <p class="note">
+          It can help to write down examples from your life before you go, including childhood if you
+          remember it. This is general information from peers, not medical advice.
+        </p>
+      </div>
+    </section>
+
+    <section data-reveal class="group two-col" aria-labelledby="words-title">
+      <h2 id="words-title">Words you might come across</h2>
+      <dl class="words">
+        {words.map((w) => (
+          <div>
+            <dt>{w.term}</dt>
+            <dd>{w.def}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <p class="suggest">
+      Know a place that has been good to neurodivergent people in Pakistan, especially adults?
+      <a href="/take-part/">Tell us about it</a>, and we'll check it before adding it.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .check {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    align-items: baseline;
+    max-width: var(--measure);
+    margin-bottom: var(--space-4);
+  }
+  .group {
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--plaster-edge);
+    scroll-margin-top: 1.5rem;
+  }
+  .group h2 { font-size: var(--step-3); max-width: 24ch; }
+  .group-intro { margin-top: var(--space-2); color: var(--ink-soft); max-width: var(--measure); }
+  .urgent {
+    background: var(--plaster-deep);
+    border: 1px solid var(--plaster-edge);
+    border-radius: var(--radius);
+    padding: var(--space-4) clamp(1.25rem, 3vw, 2.5rem);
+    margin-bottom: var(--space-4);
+  }
+  .res-list {
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4) var(--space-5);
+  }
+  @media (min-width: 52rem) {
+    .res-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .res h3 { font-size: var(--step-1); margin-bottom: 0.35rem; }
+  .res-where { color: var(--ink-soft); font-weight: 650; font-size: var(--step--1); margin-bottom: 0.35rem; }
+  .res > p { max-width: 50ch; }
+  .res-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin-top: 0.6rem;
+  }
+  .res-meta a { font-weight: 650; min-height: 44px; display: inline-flex; align-items: center; }
+  .res-phone { font-variant-numeric: tabular-nums; }
+  @media (min-width: 56rem) {
+    .two-col { display: grid; grid-template-columns: 20rem 1fr; gap: var(--space-5); }
+  }
+  .two-col h2 { margin-bottom: var(--space-3); font-size: var(--step-2); }
+  .asks { display: grid; gap: 0.5rem; margin-block: var(--space-3); }
+  .words { margin: 0; display: grid; gap: var(--space-3); max-width: 44rem; }
+  .words dt { font-weight: 700; }
+  .words dd { margin: 0.2rem 0 0; color: var(--ink-soft); }
+  .suggest {
+    border-top: 1px solid var(--plaster-edge);
+    padding-top: var(--space-4);
+    max-width: var(--measure);
+  }
+</style>

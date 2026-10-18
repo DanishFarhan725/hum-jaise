@@ -1,0 +1,12 @@
+---
+// The Hum Jaise mark: one star from the jaali lattice, with an open centre.
+interface Props { size?: number }
+const { size = 34 } = Astro.props;
+---
+<svg class="mark" viewBox="0 0 40 40" width={size} height={size} aria-hidden="true">
+  <g fill="var(--sage)">
+    <rect x="9" y="9" width="22" height="22" rx="2" />
+    <rect x="9" y="9" width="22" height="22" rx="2" transform="rotate(45 20 20)" />
+  </g>
+  <circle cx="20" cy="20" r="6.5" fill="var(--sun)" />
+</svg>

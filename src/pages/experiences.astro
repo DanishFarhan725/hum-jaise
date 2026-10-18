@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+
+const all = await getCollection('experiences');
+const settings = [
+  { key: 'home', title: 'At home and at family gatherings' },
+  { key: 'study-work', title: 'At school, college and work' },
+  { key: 'senses', title: 'In your body and senses' },
+  { key: 'mind', title: 'In how your mind works' },
+  { key: 'told', title: 'In what people tell you about yourself' },
+] as const;
+---
+<Base title="Experiences" description="Everyday moments many neurodivergent people in Pakistan will recognise.">
+  <PageIntro title="Does any of this sound familiar?" urdu="کیا یہ آپ کو جانا پہچانا لگتا ہے؟">
+    <p>
+      These are moments many neurodivergent people describe. We wrote them ourselves from common
+      experiences. They aren't quotes from real people, and nobody's story has been borrowed.
+    </p>
+  </PageIntro>
+
+  <div class="wrap">
+    <nav class="jump" aria-label="Jump to a setting">
+      <ul role="list">
+        {settings.map((s) => <li><a href={`#${s.key}`}>{s.title}</a></li>)}
+      </ul>
+    </nav>
+
+    {settings.map((s) => (
+      <section class="setting" data-reveal id={s.key} aria-labelledby={`${s.key}-title`}>
+        <h2 id={`${s.key}-title`}>{s.title}</h2>
+        <ul class="moments star-list" role="list">
+          {all.filter((e) => e.data.setting === s.key).map((e) => <li>{e.data.text}</li>)}
+        </ul>
+      </section>
+    ))}
+
+    <section class="closing" data-reveal aria-labelledby="closing-title">
+      <h2 id="closing-title">If you recognised yourself in even one of these, this place is for you.</h2>
+      <p>
+        Not every experience will fit, and that's fine. Neurodivergence looks different in every
+        person. Later, members will be able to share their own experiences, in their own words, if
+        they choose to. Until then, you're welcome to write to us.
+      </p>
+      <div class="closing-actions">
+        <a class="button" href="/take-part/">Write to us</a>
+        <a class="quiet-link" href="/principles/">How we'll treat each other</a>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .jump ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.3em 1em;
+    border-radius: 999px;
+    background: var(--plaster-deep);
+    border: 1px solid var(--plaster-edge);
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .jump a:hover { border-color: var(--ink-soft); }
+
+  .setting {
+    display: grid;
+    gap: var(--space-3);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--plaster-edge);
+  }
+  @media (min-width: 56rem) {
+    .setting { grid-template-columns: 20rem 1fr; gap: var(--space-5); }
+    .setting h2 { position: sticky; top: 2rem; align-self: start; }
+  }
+  .setting h2 { font-size: var(--step-2); }
+  .moments { display: grid; gap: var(--space-3); max-width: 40rem; }
+  .moments li { font-size: var(--step-1); line-height: 1.5; }
+
+  .closing {
+    border-top: 1px solid var(--plaster-edge);
+    padding-top: var(--space-5);
+    max-width: 44rem;
+  }
+  .closing h2 { font-size: var(--step-3); margin-bottom: var(--space-3); }
+  .closing p { max-width: var(--measure); }
+  .closing-actions { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; margin-top: var(--space-4); }
+</style>
