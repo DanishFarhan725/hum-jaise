@@ -6,7 +6,7 @@ interface Props { placement?: 'hero' | 'intro' }
 const { placement = 'hero' } = Astro.props;
 const uid = `${placement}-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<div class={`jaali-light jaali-${uid}`} aria-hidden="true">
+<div class={`jaali-light jaali-${placement}`} aria-hidden="true">
   <svg class="jaali-svg" preserveAspectRatio="xMaxYMid slice" viewBox="0 0 1200 900">
     <defs>
       <pattern id={`jaali-${uid}`} width="72" height="72" patternUnits="userSpaceOnUse">
